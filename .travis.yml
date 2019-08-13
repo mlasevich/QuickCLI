@@ -1,36 +1,23 @@
 language: python
-
 python:
-#  - "2.6"
-  - "2.7"
-#  - "3.3"
-#  - "3.4"
-#  - "3.5"
-#  - "3.5-dev"  # 3.5 development branch
-  - "3.6"
-#  - "3.6-dev"  # 3.6 development branch
-#  - "3.7-dev"  # 3.7 development branch
-
+- '2.7'
+- '3.6'
 cache: pip
-
-# command to install dependencies
 install:
-  - 'pip install -r requirements-tests.txt'
-  - 'pip install -r requirements.txt'
-  - 'pip install coveralls'
-
-script: 
-  -  'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src .'
-
+- pip install -r requirements-tests.txt
+- pip install -r requirements.txt
+- pip install coveralls
+script:
+- python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src
+  .
 after_success:
-  - coveralls
-
+- coveralls
 deploy:
   provider: pypi
   user: mlasevich
   password:
-    secure: "***"
+    secure: qg4ilKP0pFSifbLNoVs9vX8csKpCY7DDJaydXyPGP5Gcp0JjcLDE6SzY9R9UxbfDfTuuAMR+XdI1eeqaF1KGgi5gORzeEVg0+YDYG+yr9A1eJbDUFlXTYP45LB7OTxQ+6/R8OA3sSicn2BZ6xI5frsP7hG4VwPBACWSoFhy0mYHutMKpurGqLrMfJnMlWRStnN/xxjAu+t7ut9k6MRmW5rsQCgxx2CCySxDpgOR4vYdRUzymVhIeD+hcmsjipQbldt7eAlZaAa4RebQxRL5TtbLKdFVu0RncgoufEBqzdJVlBT9Np3YLkJqmCXlBxm6iki6/E/h9ljnoX10e9qQC3tL62FmB9PRCDwk6+sI9k+mn57h71lFv0lomL47y7p7AIvxUeHNPa3H2o+RApjT9Uic67xAVPCHTKCBxDfg0urghMbMQBz8M7i6sManHtteaEZfyKC/8vAFkfwE3HiVZQJCkctzK9ZNYavLHeAPnfKib0l6AsSOUzLU0i1TmlGcl3DDSG0UvXhStKuWs/SlocaxwVr/1neTVUKJt9OruxwHrZABTkEEPCTydvKLNCG91Mky/TGEK8RPzKEIzdgIOLr8HH3oHBDIMuP1lfAQGyRQLghHgE0STMub+3yVOJdaCrr9m5NnC4tWOcX8m3q5fKRCNminblVMr7OJkb2PdZ04=
   skip_existing: true
-  distributions: "sdist bdist_wheel"
+  distributions: sdist bdist_wheel
   on:
     tags: true
