@@ -110,12 +110,12 @@ class QuickCLICommandWrapper(object):
             if action_name is not None:
                 subcommand = self.sub_cmd_idx.get(action_name)
                 if subcommand:
-                    return subcommand.execute(args)
+                    return subcommand.execute(args, self)
                 else:
                     return self.command.on_invalid_subcommand(action_name, self)
             else:
                 return self.command.on_missing_subcommand(self)
-        return self.command.execute(args)
+        return self.command.execute(args, self)
 
     def __getattr__(self, name):
         ''' Get attribute '''

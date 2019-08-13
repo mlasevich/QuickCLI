@@ -142,7 +142,7 @@ class QuickCLIAppLogged(QuickCLIApp):
         verbosity = self.arg_value('verbosity', 0)
         if verbosity > 2:
             return logging.DEBUG
-        elif verbosity > 1:
+        if verbosity > 1:
             return logging.INFO
         return logging.WARNING
 

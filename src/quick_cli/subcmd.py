@@ -63,7 +63,7 @@ class QuickCLISubCommand(object):
         LOG.debug("Prep Command for %s - action: %s",
                   self.name, self.action != None)
 
-    def execute(self, args):
+    def execute(self, args, wrapper):
         ''' Execute Command '''
         LOG.debug("Execute Command for %s", self.name or "app")
 
