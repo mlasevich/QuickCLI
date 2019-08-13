@@ -6,7 +6,8 @@
 
 
 ## QuickCLI Release Notes
-
+* 0.1.1
+    * Bugfixes
 * 0.1.0
     * Initial version
 
