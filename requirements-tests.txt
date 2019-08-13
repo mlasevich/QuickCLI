@@ -4,3 +4,4 @@ pylint
 pytest-cov
 six
 backports.tempfile
+coverage
