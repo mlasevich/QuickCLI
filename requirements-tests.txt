@@ -1,0 +1,6 @@
+# Unit test reqirements
+mock
+pylint
+pytest-cov
+six
+backports.tempfile
