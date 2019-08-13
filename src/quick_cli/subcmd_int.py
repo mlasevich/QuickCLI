@@ -102,7 +102,7 @@ class QuickCLICommandWrapper(object):
 
         return parser
 
-    def execute(self, args):
+    def execute(self, args, wrapper=None):
         ''' Execute Command '''
         self.command.prep_command(args, self)
         if self.has_subcommands:
