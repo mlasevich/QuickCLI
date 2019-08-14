@@ -122,4 +122,24 @@ class Action(ActionBase):
     ''' Generic Action '''
 
     def __init__(self, name, aliases=None, **kwargs):
+        self._args = self._process_args(kwargs.pop('args', []))
+        self.actions = kwargs.get('actions')
         ActionBase.__init__(self, name, aliases=aliases, **kwargs)
+
+    def _process_args(self, args):
+        ''' Process arguments '''
+        processed_args = []
+        for item in args:
+            arg = dict(item)
+            if isinstance(arg, dict):
+                names = args.pop('flags', [])
+                if isinstance(names, str):
+                    names = [names]
+                processed_args.append((names, args))
+        return processed_args
+
+    def parser_args(self, parser):
+        parser = ActionBase.parser_args(self, parser)
+        for flags, args in self._args:
+            parser.add_argument(*flags, **args)
+        return parser
