@@ -6,6 +6,8 @@
 
 
 ## QuickCLI Release Notes
+* 0.2.0
+    * Replacing subcommands with actions
 * 0.1.2
     * Bugfixes
 * 0.1.0
