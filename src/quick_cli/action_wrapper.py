@@ -1,5 +1,5 @@
 ''' 
-Subcommand Internal tools
+Action Wrapper
 '''
 import logging
 import sys
@@ -9,7 +9,7 @@ LOG = logging.getLogger(__name__)
 IS_PYTHON2 = sys.version_info[0] == 2
 
 
-class QuickCLICommandWrapper(object):
+class ActionWrapper(object):
 
     def __init__(self, command, parent):
         ''' Constructor for Command Wrapper '''
@@ -17,25 +17,25 @@ class QuickCLICommandWrapper(object):
         self.parent = parent
         self.app = self.root.command
 
-        self.sub_commands = []
-        self.sub_cmd_idx = {}
-        self._process_subcommands(command.SUBCOMMANDS)
+        self.actions = []
+        self.actions_idx = {}
+        self._process_actions(command.actions)
 
-    def _process_subcommands(self, subcommands):
-        ''' Process subcommands '''
-        for subcommand in subcommands:
-            wrapped = QuickCLICommandWrapper(subcommand, self)
-            self.sub_commands.append(wrapped)
-            self.sub_cmd_idx[subcommand.name] = wrapped
-        for wrapped in self.sub_commands:
+    def _process_actions(self, actions):
+        ''' Process actions '''
+        for action in actions:
+            wrapped = ActionWrapper(action, self)
+            self.actions.append(wrapped)
+            self.actions_idx[action.name] = wrapped
+        for wrapped in self.actions:
             for alias in wrapped.aliases:
-                if not alias in self.sub_cmd_idx:
-                    self.sub_cmd_idx[alias] = wrapped
+                if not alias in self.actions_idx:
+                    self.actions_idx[alias] = wrapped
 
     @property
-    def has_subcommands(self):
+    def has_actions(self):
         ''' Check if we have sub-commands '''
-        return True if self.sub_commands else False
+        return True if self.actions else False
 
     @property
     def root(self):
@@ -71,14 +71,14 @@ class QuickCLICommandWrapper(object):
 
     @property
     def dest(self):
-        ''' Get Destination key for argumenrs for this command '''
-        if self.command.SUBCOMMAND_DEST:
-            return self.command.SUBCOMMAND_DEST
+        ''' Get Destination key for arguments for this command '''
+        if self.command.actions_dest:
+            return self.command.actions_dest
         path = self.path
 
         if not path:
-            return self.command.SUBCOMMAND_DEST_BASE
-        return "%s_%s" % (path, self.command.SUBCOMMAND_DEST_BASE)
+            return self.command.actions_dest_base
+        return "%s_%s" % (path, self.command.actions_dest_base)
 
     def parser_args(self, parser):
         ''' Add arguments to parser '''
@@ -87,34 +87,34 @@ class QuickCLICommandWrapper(object):
     def configure_parser(self, parser):
         ''' Configure Parser '''
         parser = self.parser_args(parser)
-        if self.has_subcommands:
+        if self.has_actions:
             subparsers = parser.add_subparsers(dest=self.dest,
-                                               help=self.command.SUBCOMMAND_DESC,
-                                               title=self.command.SUBCOMMAND_TITLE,
-                                               metavar=self.command.SUBCOMMAND_META)
+                                               help=self.command.actions_desc,
+                                               title=self.command.actions_title,
+                                               metavar=self.command.actions_metavar)
 
-            for subcommand in self.sub_commands:
-                args = {'help': subcommand.desc}
-                if subcommand.aliases and not IS_PYTHON2:
-                    args['aliases'] = subcommand.aliases
-                subparser = subparsers.add_parser(subcommand.name, **args)
-                subcommand.configure_parser(subparser)
+            for action in self.actions:
+                args = {'help': action.desc}
+                if action.aliases and not IS_PYTHON2:
+                    args['aliases'] = action.aliases
+                subparser = subparsers.add_parser(action.name, **args)
+                action.configure_parser(subparser)
 
         return parser
 
     def execute(self, args, wrapper=None):
         ''' Execute Command '''
         self.command.prep_command(args, self)
-        if self.has_subcommands:
+        if self.has_actions:
             action_name = args.get(self.dest, None)
             if action_name is not None:
-                subcommand = self.sub_cmd_idx.get(action_name)
-                if subcommand:
-                    return subcommand.execute(args, self)
+                action = self.actions_idx.get(action_name)
+                if action:
+                    return action.execute(args, self)
                 else:
-                    return self.command.on_invalid_subcommand(action_name, self)
+                    return self.command.on_invalid_action(action_name, self)
             else:
-                return self.command.on_missing_subcommand(self)
+                return self.command.on_missing_action(self)
         return self.command.execute(args, self)
 
     def __getattr__(self, name):

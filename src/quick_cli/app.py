@@ -4,17 +4,17 @@ import logging
 import sys
 import traceback
 
-from quick_cli.subcmd_int import QuickCLICommandWrapper
+from quick_cli.action_wrapper import ActionWrapper
 
+from .actions import Action
 from .app_info import QuickCLIAppBaseInfo
 from .context import QuickCLIContext
-from .subcmd import QuickCLISubCommand
 
 
 LOG = logging.getLogger(__name__)
 
 
-class QuickCLIApp(QuickCLIAppBaseInfo, QuickCLISubCommand):
+class QuickCLIApp(QuickCLIAppBaseInfo, Action):
     ''' QuickCLI Application Base '''
     DEBUG = False
 
@@ -26,8 +26,8 @@ class QuickCLIApp(QuickCLIAppBaseInfo, QuickCLISubCommand):
         context.update(kwargs)
         self.context = context
         QuickCLIAppBaseInfo.__init__(self, **kwargs)
-        QuickCLISubCommand.__init__(self, None)
-        self.command = QuickCLICommandWrapper(self, None)
+        Action.__init__(self, None)
+        self.command = ActionWrapper(self, None)
 
     def parser(self):
         ''' Create App Args Parser '''
@@ -159,6 +159,6 @@ class QuickCLIAppLogged(QuickCLIApp):
     def execute(self, args, wrapper):
         ''' Main Section of execution '''
         LOG.info("Running application with args: %s", args)
-        if self.command.has_subcommands:
+        if self.command.has_actions:
             return self.command.execute(args)
         return 0

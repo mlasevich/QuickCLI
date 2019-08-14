@@ -1,16 +1,22 @@
 ''' My Application '''
 
-from quick_cli import QuickCLIApp, QuickCLISubCommand
-from quick_cli.app import QuickCLIAppLogged
+from quick_cli import Action
+from quick_cli import QuickCLIApp
+from quick_cli import QuickCLIAppLogged
+
 
 __all__ = []
 __version__ = '0.0.2'
 __date__ = '2019-08-11'
-__updated__ = '2019-08-12'
+__updated__ = '2019-08-13'
 
 
-class ActionOne(QuickCLISubCommand):
+class ActionOne(Action):
     ''' Action One '''
+    ACTIONS_DESC = "as one"
+    ACTIONS_TITLE = "title"
+
+    DESC = "Action One Description"
 
     def parser_args(self, parser):
         ''' Add args '''
@@ -22,9 +28,9 @@ class ActionOne(QuickCLISubCommand):
         print("Pre-Ex %s!" % self.__class__.__name__)
 
 
-class ActionThree(QuickCLISubCommand):
+class ActionThree(Action):
     ''' Action Three '''
-    SUBCOMMANDS = [
+    ACTIONS = [
         ActionOne('two', aliases=['wan']),
     ]
 
@@ -38,17 +44,17 @@ class ActionThree(QuickCLISubCommand):
         print("Pre-Ex %s!" % self.__class__.__name__)
 
 
-class ActionTwo(QuickCLISubCommand):
+class ActionTwo(Action):
     '''
     Action Two!!
 
     This is my action
     '''
-    SUBCOMMANDS = [
+    ACTIONS = [
         ActionThree('two', aliases=['wan']),
         ActionOne('3')
     ]
-    SUBCOMMAND_DEST_BASE = "sub"
+    ACTIONS_DEST_BASE = "sub"
 
     def prep_command(self, args, wrapper):
         ''' PreExecution Hook '''
@@ -63,11 +69,15 @@ class MyApp(QuickCLIAppLogged):
     ''' My Sample App '''
     DEBUG = True
 
-    SUBCOMMANDS = [
+    ACTIONS = [
         ActionOne("one", aliases=['1', 'o']),
         ActionTwo("two", aliases=['2', 't']),
-        QuickCLISubCommand("3", action=run)
+        Action("3", action=run)
     ]
+    ACTIONS_DESC = "as one"
+    ACTIONS_TITLE = "title"
+
+    DESC = "Action One Description"
 
     program_epilog = '''
     
