@@ -8,7 +8,7 @@ from quick_cli import QuickCLIAppLogged
 __all__ = []
 __version__ = '0.0.2'
 __date__ = '2019-08-11'
-__updated__ = '2019-08-13'
+__updated__ = '2019-08-14'
 
 
 def one(args, wrapper):
@@ -29,6 +29,9 @@ def make_test_action(msg):
     return action
 
 
+CONFIG_FLAG = [dict(flags='-c', dest='config', help="Config file")]
+
+
 class MyApp(QuickCLIAppLogged):
     ''' My Sample App '''
     DEBUG = True
@@ -36,6 +39,9 @@ class MyApp(QuickCLIAppLogged):
     ACTIONS = [
         Action("one", aliases=['1', 'o'], action=one, actions_desc="Second Tier Actions",
                args=[
+                   CONFIG_FLAG,
+                   dict(flags='--test', dest="test",
+                        action="store_true", help="test flag")
         ],
             actions=[
                    Action('uno', action=make_test_action("uno")),

@@ -90,6 +90,7 @@ class QuickCLIApp(QuickCLIAppBaseInfo, Action):
     def _process_args(self, args):
         ''' Process Arguments '''
         self.context.set('args_ns', args)  # Do we need this?
+        print("Args: %s" % args)
         self.context.set('args', vars(args))
         self.process_args()
 

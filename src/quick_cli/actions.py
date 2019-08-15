@@ -122,21 +122,25 @@ class Action(ActionBase):
     ''' Generic Action '''
 
     def __init__(self, name, aliases=None, **kwargs):
-        self._args = self._process_args(kwargs.pop('args', []))
-        self.actions = kwargs.get('actions')
+        self._args = self._register_args(kwargs.pop('args', []))
         ActionBase.__init__(self, name, aliases=aliases, **kwargs)
 
-    def _process_args(self, args):
+    def _register_args(self, args):
         ''' Process arguments '''
-        processed_args = []
+        registered_args = []
         for item in args:
-            arg = dict(item)
-            if isinstance(arg, dict):
-                names = args.pop('flags', [])
-                if isinstance(names, str):
-                    names = [names]
-                processed_args.append((names, args))
-        return processed_args
+            if isinstance(item, dict):
+                arg = dict(item)
+                flags = arg.pop('flags', [])
+                if isinstance(flags, str):
+                    flags = [flags]
+                registered_args.append((flags, arg))
+            elif isinstance(item, list):
+                registered_args.extend(self._register_args(item))
+            else:
+                LOG.warning("Unknown args type: %s, ignoring", type(item))
+
+        return registered_args
 
     def parser_args(self, parser):
         parser = ActionBase.parser_args(self, parser)
