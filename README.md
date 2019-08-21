@@ -8,6 +8,9 @@
 | :---: |
 
 ## QuickCLI Release Notes
+* 0.2.1
+    * bugfixes
+    * set default license info to be blank, provide Apache license info as a constant
 * 0.2.0
     * Replacing subcommands with actions
 * 0.1.2
