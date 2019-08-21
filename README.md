@@ -8,6 +8,8 @@
 | :---: |
 
 ## QuickCLI Release Notes
+* 0.2.2
+    * Add consistent args to on_missing_action and on_invalid_action hooks
 * 0.2.1
     * bugfixes
     * set default license info to be blank, provide Apache license info as a constant

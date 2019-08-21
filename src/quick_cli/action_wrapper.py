@@ -112,9 +112,9 @@ class ActionWrapper(object):
                 if action:
                     return action.execute(args, self)
                 else:
-                    return self.command.on_invalid_action(action_name, self)
+                    return self.command.on_invalid_action(args, self, action_name)
             else:
-                return self.command.on_missing_action(self)
+                return self.command.on_missing_action(args, self)
         return self.command.execute(args, self)
 
     def __getattr__(self, name):

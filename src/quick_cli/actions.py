@@ -83,14 +83,14 @@ class ActionBase(object):
     def process_args(self):
         ''' Process Arguments Hook'''
 
-    def on_invalid_action(self, action_name, wrapper):
+    def on_invalid_action(self, args, wrapper, action_name):
         ''' Hook executed if action is invalid '''
         path = wrapper.path
         LOG.critical("Invalid %s '%s'%s", self.actions_title,
                      action_name, " for %s" % path if path else "")
         return 1
 
-    def on_missing_action(self, wrapper):
+    def on_missing_action(self, args, wrapper):
         ''' Hook executed if action is not provided '''
         path = wrapper.delimited_path(":")
         LOG.critical("Must Specify Action%s", " for action '%s'" %
