@@ -3,6 +3,15 @@ from datetime import datetime
 import os.path
 import sys
 
+APACHE_LICENSE_INFO = '''
+  Licensed under the Apache License 2.0
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Distributed on an "AS IS" basis without warranties
+  or conditions of any kind, either express or implied.
+
+'''
+
 
 class QuickCLIAppInfo(object):
     ''' Application Info '''
@@ -18,11 +27,6 @@ class QuickCLIAppInfo(object):
         'program_org': 'unknown',
         'program_copyright_year': datetime.now().year,
         'program_license_desc': '''
-  Licensed under the Apache License 2.0
-  http://www.apache.org/licenses/LICENSE-2.0
-
-  Distributed on an "AS IS" basis without warranties
-  or conditions of any kind, either express or implied.
 
 ''',
         'program_desc': "Usage:",
