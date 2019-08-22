@@ -73,7 +73,7 @@ class QuickCLIApp(QuickCLIAppBaseInfo, Action):
         ''' Executed On Uncaught Exception (wrapper) '''
         LOG.info("Uncaught Exception: %s: %s",
                  exception.__class__.__name__, exception)
-        self.on_error(exception)
+        return self.on_error(exception)
 
     def pre_parser_config(self):
         ''' Hook for execution on before parser configuration '''
