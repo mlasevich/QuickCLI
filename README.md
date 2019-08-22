@@ -8,6 +8,8 @@
 | :---: |
 
 ## QuickCLI Release Notes
+* 0.2.3
+    * Fixed lack of return of value on error
 * 0.2.2
     * Add consistent args to on_missing_action and on_invalid_action hooks
 * 0.2.1
